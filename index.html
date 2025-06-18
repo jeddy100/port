@@ -101,13 +101,27 @@
   z-index: 10001;
   transition: box-shadow 0.3s ease;
 }
-
 .sticky-header a {
   color: #4855d2;
   font-weight: bold;
   font-size: 1.1rem;
   padding-left: 17%; /* aligné avec les boîtes */
 }
+@media (max-width: 768px) {
+  .sticky-header {
+    position: static;
+    padding: 30px 30px;
+    text-align: center;
+  }
+  .sticky-header a {
+  color: #4855d2;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding-left: 0%; /* aligné avec les boîtes */
+}
+}
+
+
   </style>
   <script>
     window.addEventListener('scroll', reveal);
