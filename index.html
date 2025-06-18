@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeddy - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #1c1c1c; color: #e0e0e0; line-height: 1.6; font-size: 0.85rem; }
+    header { background: #1c1c1c; color: #fff; padding: 120px 20px 60px; text-align: center; position: relative; }
+    header img { width: 130px; border-radius: 50%; margin-bottom: 20px; border: 3px solid #4855d2; box-shadow: 0 0 15px #4855d2; }
+    header h1 { font-size: 2.4rem; animation: fadeInDown 1s ease; color: #4855d2; }
+    header p { font-size: 1rem; opacity: 0.85; animation: fadeIn 2s ease; max-width: 600px; margin: auto; }
+
+    section { padding: 80px 20px; max-width: 1000px; margin: auto; opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; text-align: center; }
+    section.visible { opacity: 1; transform: translateY(0); }
+
+    h2 { margin-bottom: 40px; border-bottom: 2px solid #333; padding-bottom: 10px; color: #4855d2; font-size: 1.8rem; text-align: center; }
+
+    ul { list-style: none; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+    li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #252e42; border-radius: 10px; box-shadow: 0 2px 4px rgba(72, 85, 210, 0.1); font-size: 0.9rem; }
+    li i { font-size: 20px; color: #4855d2; }
+
+     .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .project { background: #252e42; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #4855d2; transition: transform 0.3s ease, box-shadow 0.3s ease; text-align: left; }
+    .project:hover { transform: translateY(-5px); box-shadow: 0 0 15px #4855d2; }
+    .project h3 { margin-bottom: 12px; color: #4855d2; font-size: 1.2rem; }
+    .project img { width: 100%; border-radius: 8px; margin-bottom: 12px; }
+    .project button { margin-top: 12px; background: #4855d2; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: background 0.3s; }
+    .project button:hover { background: #6f78e9; color: #111; }
+    
+    .modal { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
+    .modal-content { background: #252e42; color: #e0e0e0; padding: 30px; border-radius: 12px; max-width: 600px; width: 90%; position: relative; box-shadow: 0 0 20px #4855d2; animation: fadeIn 0.5s ease; }
+    .close { position: absolute; top: 15px; right: 20px; cursor: pointer; font-weight: bold; font-size: 1.5rem; color: #ccc; }
+
+    .about-section { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 40px; padding: 60px 20px; margin-top: 60px; }
+    .about-img { flex: 1 1 300px; max-width: 100%; }
+    .about-img img { width: 100%; border-radius: 12px; }
+    .about-text { flex: 2 1 400px; text-align: left; font-size: 1rem; line-height: 1.6; }
+    .about-text p { margin-bottom: 15px; }
+
+    .qualities { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+    .quality-box { background: #252e42; border-radius: 12px; padding: 20px; text-align: center; flex: 1 1 120px; box-shadow: 0 0 10px #4855d2; }
+    .quality-box i { font-size: 30px; color: #4855d2; margin-bottom: 10px; }
+    .quality-box span { font-size: 0.9rem; color: white; display: block; }
+
+    .skills-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
+    .skill-box { background: #252e42; padding: 18px; border-radius: 12px; flex: 1 1 260px; color: white; box-shadow: 0 0 10px #4855d2; }
+    .skill-box h3 { margin-bottom: 16px; color: #4855d2; font-size: 1.3rem; }
+    .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .skill-item { display: flex; flex-direction: column; align-items: center; }
+    .skill-item i { font-size: 24px; margin-bottom: 8px; color: #4855d2; }
+    .skill-item span { font-size: 0.9rem; }
+    .skill-level { margin-top: 4px; font-size: 0.8rem; color: #ffffffaa; }
+
+    footer { background: #1c1c1c; color: #aaa; text-align: center; padding: 40px 20px 100px; position: relative; }
+    a { color: #4855d2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .social-icons { display: flex; justify-content: center; gap: 30px; margin-top: 30px; }
+    .social-icons a { color: #4855d2; font-size: 1.5rem; transition: transform 0.3s ease; }
+    .social-icons a:hover { transform: scale(1.2); }
+
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-in-out; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    .dock-menu {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(34,34,34,0.95);
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: flex;
+      gap: 30px;
+      z-index: 10000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+    .dock-menu a {
+      color: #4855d2;
+      font-size: 1.8rem;
+      transition: transform 0.2s ease;
+    }
+    .dock-menu a:hover {
+      transform: scale(1.4);
+    }
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #1c1c1c;
+  padding: 30px 30px;
+  text-align: left;
+  z-index: 10001;
+  transition: box-shadow 0.3s ease;
+}
+
+.sticky-header a {
+  color: #4855d2;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding-left: 17%; /* aligné avec les boîtes */
+}
+  </style>
+  <script>
+    window.addEventListener('scroll', reveal);
+    function reveal() {
+      const elements = document.querySelectorAll('.reveal');
+      for (const el of elements) {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        const elementVisible = 150;
+        if (elementTop < windowHeight - elementVisible) {
+          el.classList.add("active");
+        }
+      }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      reveal();
+    });
+  </script>
+
+  <script>
+  window.addEventListener('scroll', reveal);
+  function reveal() {
+    const elements = document.querySelectorAll('.reveal');
+    for (const el of elements) {
+      const windowHeight = window.innerHeight;
+      const elementTop = el.getBoundingClientRect().top;
+      const elementVisible = 150;
+      if (elementTop < windowHeight - elementVisible) {
+        el.classList.add("active");
+      }
+    }
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    reveal();
+
+    const header = document.querySelector('.sticky-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY === 0) {
+        header.style.boxShadow = 'none';
+      } else {
+        header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
+      }
+    });
+  });
+</script>
+</head>
+<body>
+    <div class="sticky-header">
+    <a href="#home">Jeddy</a>
+  </div>
+  <header id="home">
+    <img src="images/1000001477.jpg" alt="Avatar Jeddy">
+    <h1>Hello, je suis<br>Jeddy Ranivoaritida</h1>
+    <p>Étudiant développeur full-stack passionné par Java, Spring Boot, et le développement web moderne.</p>
+  </header>
+
+
+  <section class="reveal visible" id="about">
+    <h2>À propos de moi</h2>
+    <div class="about-section">
+      <div class="about-img">
+      <img src="images/hehe.jpg" alt="Photo de profil">
+    </div>
+    <div class="about-text">
+      <div class="qualities">
+        <div class="quality-box">
+          <i class="fas fa-user-check"></i>
+          <span>Autonome</span>
+        </div>
+        <div class="quality-box">
+          <i class="fas fa-bolt"></i>
+          <span>Persévérant</span>
+        </div>
+        <div class="quality-box">
+          <i class="fas fa-sync-alt"></i>
+          <span>Adaptabilité</span>
+        </div>
+      </div>
+      <div class="about-text">
+            <p>Passionné par le développement full-stack, je me spécialise en Java (Spring Boot) et PHP (CodeIgniter), avec une touche de front-end moderne en HTML, CSS, JavaScript et React. J’explore aussi le machine learning avec Python et j’aime résoudre des problèmes concrets avec des solutions efficaces et élégantes.</p>
+        <p>Suite à un bac +3 développeur web à IT University, j’ai pu acquérir les bases de plusieurs langages web (HTML, CSS, Javascript, PHP, Java, React), la gestion de bases de données mais aussi l’utilisation de logiciels tels que Photoshop, Adobe XD ou Figma pour créer des maquettes interactives.</p>
+        <p>J’ai ensuite pu exercer et améliorer ces connaissances avec un stage de 8 mois .</p>
+        <p>J’aimerais maintenant continuer ma formation avec une quatrième année en  « Développement d'application » en alternance toujours à IT University.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal visible" id="skills">
+    <h2>Compétences</h2>
+    <div class="skills-container">
+      <div class="skill-box">
+        <h3>Développement Web et application</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><i class="fab fa-html5"></i><span>HTML</span><div class="skill-level">Avancé</div></div>
+          <div class="skill-item"><i class="fab fa-css3-alt"></i><span>CSS</span><div class="skill-level">Avancé</div></div>
+          <div class="skill-item"><i class="fab fa-js"></i><span>JavaScript</span><div class="skill-level">Intermédiaire</div></div>
+          <div class="skill-item"><i class="fab fa-php"></i><span>PHP</span><div class="skill-level">Intermédiaire</div></div>
+          <div class="skill-item"><i class="fab fa-react"></i><span>React</span><div class="skill-level">Bases</div></div>
+          <div class="skill-item"><i class="fab fa-python"></i><span>Python (Pandas, Random Forest)</span><div class="skill-level">Bases</div></div>
+          <div class="skill-item"><i class="fab fa-java"></i><span>Java Spring</span><div class="skill-level">Avancé</div></div>
+        </div>
+      </div>
+      <div class="skill-box">
+        <h3>Web Design</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><i class="fas fa-pen-nib"></i><span>Adobe XD</span><div class="skill-level">Intermédiaire</div></div>
+          <div class="skill-item"><i class="fab fa-figma"></i><span>Figma</span><div class="skill-level">Bases</div></div>
+          <div class="skill-item"><i class="fas fa-pencil-alt"></i><span>Pencil</span><div class="skill-level">Bases</div></div>
+          <div class="skill-item"><i class="fas fa-image"></i><span>Photoshop</span><div class="skill-level">Bases</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <section class="reveal visible" id="parcours">
+    <h2>Mon Parcours</h2>
+    <div class="project-grid">
+      <div class="project">
+        <h3>Licence L3 - IT University</h3>
+        <p>Option : Développement d'application</p>
+      </div>
+      <div class="project">
+        <h3>Stagiaire au Ministère de la Santé</h3>
+        <p>Septembre 2024 - Mai 2025</p>
+        <button onclick="document.getElementById('modal1').style.display='flex'">Voir plus</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('modal1').style.display='none'">&times;</span>
+      <h3>Missions durant le stage au Ministère de la Santé</h3>
+      <ul style="text-align: left;">
+        <li>Création d’un système de gestion d’équipements avec Spring Boot</li>
+        <li>Utilisation de Leaflet.js pour cartographier les structures de santé</li>
+        <li>Intégration de Firebase pour la gestion d’images</li>
+        <li>Création de tableaux de bord statistiques avec Bootstrap</li>
+        <li>Gestion de l’authentification et de la sécurité</li>
+        <li>Utilisation de LibreOffice/Excel pour le traitement des données</li>
+        <li>Création d’une interface responsive et ergonomique</li>
+        <li>Connexion de l’application avec une base PostgreSQL</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <section id="projects">
+    <h2>Projets</h2>
+    <div class="project-grid">
+      <div class="project">
+        <h3>Structures sanitaires</h3>
+        <img src="images/Capture d’écran (41).png" alt="Projet gestion de stock">
+        <p>Application de gestion avec stats et carte.</p>
+        <button onclick="openModal('modal1')">Voir plus</button>
+      </div>
+      <div class="project">
+        <h3>Clinique vétérinaire (Django)</h3>
+        <img src="images/2.png" alt="Projet gestion de stock">
+        <p>Frontend, recherches.</p>
+        <button onclick="openModal('modal2')">Voir plus</button>
+      </div>
+      <div class="project">
+        <h3>Recensement de véhicules et Stock</h3>
+        <img src="images/3.png" alt="Projet gestion de stock">
+        <p>Suivi de flotte pour le Ministère.</p>
+        <button onclick="openModal('modal3')">Voir plus</button>
+      </div>
+      <div class="project">
+        <h3>Machine Learning (Python)</h3>
+        <img src="images/4.png" alt="Projet gestion de stock">
+        <p>Résolution d'équations avec Random Forest.</p>
+        <button onclick="openModal('modal4')">Voir plus</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email : <a href="mailto:jeddyranivo@gmail.com">jeddyranivo@gmail.com</a></p>
+    <p>LinkedIn : <a href="https://www.linkedin.com/in/jeddy-ranivoaritida-460046310/" target="_blank">Jeddy Ranivoaritida</a></p>
+    <p>GitHub : <a href="https://github.com/jeddy100" target="_blank">@jeddy100</a></p>
+  </section>
+
+   
+  <footer>
+    <div class="social-icons">
+      <a href="mailto:jeddyranivo@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+      <a href="https://github.com/jeddy100" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/jeddy-ranivoaritida-460046310/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    </div>
+    <p>&copy; 2025 Jeddy Ranivoaritida. Tous droits réservés.</p>
+  </footer>
+
+  <div class="dock-menu">
+    <a href="#home"><i class="fas fa-house"></i></a>
+    <a href="#about"><i class="fas fa-user"></i></a>
+    <a href="#skills"><i class="fas fa-laptop-code"></i></a>
+     <a href="#parcours"><i class="fas fa-road"></i></a>
+    <a href="#projects"><i class="fas fa-js-square"></i></a>
+    <a href="#contact"><i class="fas fa-envelope"></i></a>
+  </div>
+ 
+
+  <!-- Modals -->
+  <div class="modal" id="modal1">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal1')">&times;</span>
+      <h3>Projet - Structures sanitaires</h3>
+      <p>Projet complet de gestion de structures avec authentification, carte interactive, tableau de bord statistique, et recherche multi-critères.</p>
+    </div>
+  </div>
+  <div class="modal" id="modal2">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal2')">&times;</span>
+      <h3>Clinique vétérinaire (Django)</h3>
+      <p>Participation au développement frontend d’une plateforme de gestion pour clinique vétérinaire. Tests utilisateurs et corrections de bugs en phase finale.</p>
+    </div>
+  </div>
+  <div class="modal" id="modal3">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal3')">&times;</span>
+      <h3>Recensement de véhicules</h3>
+      <p>Application développée pour un ministère afin de recenser les véhicules, leur état et leur localisation. Intégration de rapport exportable.</p>
+    </div>
+  </div>
+  <div class="modal" id="modal4">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal4')">&times;</span>
+      <h3>Machine Learning</h3>
+      <p>Projet utilisant la reconnaissance de caractères (lettres/chiffres) pour résoudre des équations mathématiques. Implémenté en Python avec Pandas et RandomForestClassifier.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', () => {
+      sections.forEach(sec => {
+        const top = window.scrollY;
+        const offset = sec.offsetTop - 200;
+        if (top >= offset) {
+          sec.classList.add('visible');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
